@@ -1,10 +1,10 @@
 import 'package:blott_mobile_assessment/utills/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/list_data_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../services/auth_service.dart';
 import '../services/data_list_service.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../utills/widgets/custom_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<DataModel>> _documents;
   String? _name;
   bool _isError = false;
+  Duration duration = const Duration(milliseconds: 500);
   final String _errorMessage = "Something went wrong. Please try again later.";
 
   @override
@@ -27,15 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
     _getCurrentUser();
   }
 
+  Future _refreshData() async {
+    _documents = DataListService().fetchDataList();
+  }
+
   // Fetch the current user name
   Future<void> _getCurrentUser() async {
     _name = await AuthService().getUserName();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       body: Column(
         children: [
@@ -97,7 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
       future: _documents,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: Colors.white,
+              size: 50,
+            ),
+          );
         }
 
         if (snapshot.hasError) {
@@ -110,20 +119,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
         final documents = snapshot.data!;
 
-        return ListView.builder(
-          padding: EdgeInsets.zero,
-          itemCount: documents.length,
-          itemBuilder: (context, index) {
-            final doc = documents[index];
-            return _buildListItem(doc,index);
-          },
+        return AnimationLimiter(
+          key: const ValueKey("20"),
+          child: RefreshIndicator(
+              onRefresh: _refreshData,
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                  final doc = documents[index];
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: duration,
+                    child: SlideAnimation(
+                        verticalOffset: 300, child: _buildListItem(doc, index)),
+                  );
+                },
+              )),
         );
       },
     );
   }
 
   // Method to build a list item
-  Widget _buildListItem(DataModel doc,int index) {
+  Widget _buildListItem(DataModel doc, int index) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -132,15 +151,15 @@ class _HomeScreenState extends State<HomeScreen> {
           Image.asset(
             height: 100,
             width: 100,
-            index == 0 ?
-            AppImages.sampleImage1:
-            index == 1 ?
-            AppImages.sampleImage2:
-            index == 2 ?
-            AppImages.sampleImage3:
-            index == 3 ?
-            AppImages.sampleImage4:
-            AppImages.sampleImage1,
+            index == 0
+                ? AppImages.sampleImage1
+                : index == 1
+                    ? AppImages.sampleImage2
+                    : index == 2
+                        ? AppImages.sampleImage3
+                        : index == 3
+                            ? AppImages.sampleImage4
+                            : AppImages.sampleImage1,
             fit: BoxFit.cover,
           ),
           const SizedBox(width: 10),

@@ -70,15 +70,12 @@ class _NotificationsAllowingScreenState extends State<NotificationsAllowingScree
   }
 
 
-  // Method to build the continue button
+  //continue button
   Widget _continueButton() {
     return ElevatedButton(
       onPressed: () {
         context.go('/home');
       },
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 50), // Ensure the button spans full width
-      ),
       child: const CustomText(
         color: Colors.white,
         isSmall: true,

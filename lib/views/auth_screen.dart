@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../services/auth_service.dart';
 import '../utills/widgets/custom_text.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,6 +22,8 @@ class _AuthScreenState extends State<AuthScreen> {
   // Controllers for first name and last name fields
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
+
+  bool _isLoading = false;
 
   // Boolean to track whether the form is valid
   bool _isFormValid = false;
@@ -92,6 +95,13 @@ class _AuthScreenState extends State<AuthScreen> {
           hintText: 'Last Name',
         ),
         const SizedBox(height: 160),
+        _isLoading ?
+        Center(
+        child: LoadingAnimationWidget.staggeredDotsWave(
+    color: Theme.of(context).colorScheme.primary,
+    size: 50,
+    ),
+    ):
         _buildSubmitButton(),
       ],
     );
@@ -105,8 +115,14 @@ class _AuthScreenState extends State<AuthScreen> {
       child: ElevatedButton(
         onPressed:  () async {
           if (_isFormValid) {
+            setState(() {
+              _isLoading = true;
+            });
             await Provider.of<AuthProvider>(context, listen: false).signUpAnonymously();
             await AuthService().saveUserName(_firstNameController.text);
+            setState(() {
+              _isLoading = false;
+            });
             Permission.notification.request();
             context.go('/notifications');
           }

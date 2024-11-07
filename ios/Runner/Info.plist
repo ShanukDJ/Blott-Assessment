@@ -13,14 +13,14 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
+	<string>Blott</string>
 	<key>UIBackgroundModes</key>
     <array>
       <string>fetch</string>
       <string>remote-notification</string>
     </array>
     <key>NSUserNotificationUsageDescription</key>
-    <string>We need your permission to send you notifications.</string>
-	<string>blott_mobile_assessment</string>
+    <string>Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

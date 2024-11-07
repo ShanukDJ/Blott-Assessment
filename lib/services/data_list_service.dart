@@ -16,8 +16,7 @@ class DataListService {
         return DataModel.fromMap(doc.data() as Map<String, dynamic>);
       }).toList();
     } catch (e) {
-      throw Exception('Failed to fetch documents: $e');
+      throw Exception('Failed to fetch data: $e');
     }
   }
-
 }

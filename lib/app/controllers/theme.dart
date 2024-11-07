@@ -94,7 +94,7 @@ class ThemeServiceProvider with ChangeNotifier {
           horizontal: 24,
         ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(24),
         ),
         minimumSize: const Size(double.infinity, 48),
       ),
