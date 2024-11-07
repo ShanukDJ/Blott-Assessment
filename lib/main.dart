@@ -1,7 +1,7 @@
 
 import 'package:blott_mobile_assessment/providers/auth_provider.dart';
 import 'package:blott_mobile_assessment/views/auth_screen.dart';
-import 'package:blott_mobile_assessment/views/home_screen.dart';
+import 'package:blott_mobile_assessment/views/data_list_screen.dart';
 import 'package:blott_mobile_assessment/views/notifications_allowing_screen.dart';
 import 'package:blott_mobile_assessment/views/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
    late ThemeServiceProvider _themeProvider;
-   late AuthServiceProvider _authProvider;
+   late AuthProvider _authProvider;
 
    @override
    void initState() {
@@ -36,8 +36,8 @@ class _MyAppState extends State<MyApp> {
 
      // Initialize Providers and Services
      _themeProvider = ThemeServiceProvider();
-     _authProvider = AuthServiceProvider();
-     
+     _authProvider = AuthProvider();
+
    }
 
    @override
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
      return MultiProvider(
        providers: [
          ChangeNotifierProvider<ThemeServiceProvider>(create: (_) => _themeProvider),
-         ChangeNotifierProvider<AuthServiceProvider>(create: (_) => _authProvider),
+         ChangeNotifierProvider<AuthProvider>(create: (_) => _authProvider),
        ],
        child: Builder(
          builder: (context) {
@@ -63,15 +63,6 @@ class _MyAppState extends State<MyApp> {
      );
    }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return ChangeNotifierProvider(
-  //     create: (context) => AuthProvider(),
-  //     child: MaterialApp.router(
-  //       routerConfig: _router,
-  //     ),
-  //   );
-  // }
 
   final GoRouter _router = GoRouter(
     initialLocation: '/',

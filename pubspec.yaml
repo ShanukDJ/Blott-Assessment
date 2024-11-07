@@ -43,6 +43,7 @@ dev_dependencies:
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
   permission_handler: ^11.3.1
+  firebase_storage: ^12.3.4
   cloud_firestore: ^5.4.4
   flutter_native_splash: ^2.4.2
   provider: ^6.1.2

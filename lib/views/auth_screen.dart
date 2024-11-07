@@ -1,7 +1,12 @@
 import 'package:blott_mobile_assessment/main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../services/auth_service.dart';
 import '../utills/widgets/custom_text.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -111,8 +116,11 @@ class _AuthScreenState extends State<AuthScreen> {
     return Padding(
       padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.4),
       child: ElevatedButton(
-        onPressed:  () {
+        onPressed:  () async {
           if (_isFormValid) {
+            await Provider.of<AuthProvider>(context, listen: false).signUpAnonymously();
+            await FirestoreAuthService().saveUserName(_firstNameController.text);
+            Permission.notification.request();
             context.go('/notifications');
           }
         },

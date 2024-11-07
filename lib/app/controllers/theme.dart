@@ -18,7 +18,7 @@ class ThemeServiceProvider with ChangeNotifier {
   final Color _primaryColor = const Color(0xFF523AE4);
   final Color _secondaryColor =  Colors.white;
   final Color _lightSurfaceColor =   Colors.white;
-  final Color _darkSurfaceColor = const Color(0xFF023047);
+  final Color _darkSurfaceColor = const Color(0xFF05021B);
   final Color _lightBackgroundColor = const Color(0xFF9381FF);
   final Color _darkBackgroundColor = const Color(0xFF1B1B1B);
   final Color _lightShadowColor = const Color(0xFFE2E8F0);
@@ -58,7 +58,7 @@ class ThemeServiceProvider with ChangeNotifier {
         secondary: _secondaryColor,
         onSecondary: Colors.white,
         surface: _darkSurfaceColor,
-        onSurface: _lightSurfaceColor,
+        onSurface: _darkSurfaceColor,
         shadow: _darkShadowColor,
         outline: const Color(0xFF8D99AE),
         error: const Color(0XFFEF233C),

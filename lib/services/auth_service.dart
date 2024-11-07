@@ -1,34 +1,27 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService {
+class FirestoreAuthService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  Future<User?> signUp(String firstName, String lastName) async {
-    try {
-      UserCredential userCredential = await _auth.signInAnonymously();
-      User? user = userCredential.user;
-
-      // Store the first and last name in firestore
-      if (user != null) {
-        await _fireStore.collection('users').doc(user.uid).set({
-          'firstName': firstName,
-          'lastName': lastName,
-        });
-      }
-
-      return user;
-    } on FirebaseAuthException catch (e) {
-      rethrow;
+  Future<void> saveUserName(String name) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).set({
+        'name': name,
+        'email': user.email ?? '',
+      });
     }
   }
 
-  Future<User?> getCurrentUser() async {
-    return _auth.currentUser;
-  }
-
-  Future<void> signOut() async {
-    await _auth.signOut();
+  Future<String?> getUserName() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot snapshot =
+      await _firestore.collection('users').doc(user.uid).get();
+      return snapshot['name'] ?? '';
+    }
+    return null;
   }
 }

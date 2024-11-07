@@ -1,36 +1,30 @@
-import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthServiceProvider extends ChangeNotifier {
-  final AuthService _authService = AuthService();
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+
+class AuthProvider extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
+
+  AuthProvider() {
+    _auth.authStateChanges().listen((user) {
+      _user = user;
+      notifyListeners();
+    });
+  }
 
   User? get user => _user;
 
-  bool get isAuthenticated => _user != null;
-
-  AuthServiceProvider() {
-    _initialize();
-  }
-
-  Future<void> _initialize() async {
-    _user = await _authService.getCurrentUser();
-    notifyListeners();
-  }
-
-  Future<void> signUp(String firstName, String lastName) async {
+  Future<void> signUpAnonymously() async {
     try {
-      _user = await _authService.signUp(firstName, lastName);
-      notifyListeners();
+      await _auth.signInAnonymously();
     } catch (e) {
-      rethrow;
+      print("Error signing in anonymously: $e");
     }
   }
 
   Future<void> signOut() async {
-    await _authService.signOut();
-    _user = null;
-    notifyListeners();
+    await _auth.signOut();
   }
 }
