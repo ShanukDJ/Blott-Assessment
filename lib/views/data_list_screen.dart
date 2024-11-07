@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/list_data_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/auth_service.dart';
-import '../services/firestore_data_list_service.dart';
+import '../services/data_list_service.dart';
 import '../utills/widgets/custom_text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,13 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _documents = FirestoreService().fetchDataList();
+    _documents = DataListService().fetchDataList();
     _getCurrentUser();
   }
 
   // Fetch the current user name
   Future<void> _getCurrentUser() async {
-    _name = await FirestoreAuthService().getUserName();
+    _name = await AuthService().getUserName();
   }
 
   @override

@@ -1,20 +1,15 @@
 import 'package:blott_mobile_assessment/app/controllers/routers.dart';
 import 'package:blott_mobile_assessment/providers/auth_provider.dart';
-import 'package:blott_mobile_assessment/views/auth_screen.dart';
-import 'package:blott_mobile_assessment/views/data_list_screen.dart';
-import 'package:blott_mobile_assessment/views/notifications_allowing_screen.dart';
-import 'package:blott_mobile_assessment/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 import 'app/controllers/theme.dart';
 import 'app/view/overlay_utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp( MyApp());
+  runApp( const MyApp());
 }
 
 class MyApp extends StatefulWidget {

@@ -1,9 +1,9 @@
-// lib/services/firestore_service.dart
+
 import 'package:blott_mobile_assessment/models/list_data_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-class FirestoreService {
+class DataListService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // Fetch all data from the Firestore collection

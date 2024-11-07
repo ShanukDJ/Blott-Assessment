@@ -106,7 +106,7 @@ class _AuthScreenState extends State<AuthScreen> {
         onPressed:  () async {
           if (_isFormValid) {
             await Provider.of<AuthProvider>(context, listen: false).signUpAnonymously();
-            await FirestoreAuthService().saveUserName(_firstNameController.text);
+            await AuthService().saveUserName(_firstNameController.text);
             Permission.notification.request();
             context.go('/notifications');
           }
