@@ -1,4 +1,4 @@
-
+import 'package:blott_mobile_assessment/app/controllers/routers.dart';
 import 'package:blott_mobile_assessment/providers/auth_provider.dart';
 import 'package:blott_mobile_assessment/views/auth_screen.dart';
 import 'package:blott_mobile_assessment/views/data_list_screen.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-
 import 'app/controllers/theme.dart';
 import 'app/view/overlay_utility.dart';
 
@@ -19,7 +18,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-   MyApp({super.key});
+   const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -55,7 +54,7 @@ class _MyAppState extends State<MyApp> {
              theme: context.watch<ThemeServiceProvider>().lightTheme,
              darkTheme: context.watch<ThemeServiceProvider>().darkTheme,
              themeMode: context.watch<ThemeServiceProvider>().themeMode,
-             routerConfig: _router,
+             routerConfig: AppRouter.router,
              builder:(context, child) => OverlayUtility(child: child),
            );
          },
@@ -63,26 +62,4 @@ class _MyAppState extends State<MyApp> {
      );
    }
 
-
-  final GoRouter _router = GoRouter(
-    initialLocation: '/',
-    routes: [
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const SplashScreen(),
-      ),
-      GoRoute(
-        path: '/auth',
-        builder: (context, state) => const AuthScreen(),
-      ),
-      GoRoute(
-        path: '/notifications',
-        builder: (context, state) => const NotificationsAllowingScreen(),
-      ),
-      GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomeScreen(),
-      ),
-    ],
-  );
 }

@@ -8,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../utills/widgets/custom_text_form_field.dart';
+
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -80,12 +82,12 @@ class _AuthScreenState extends State<AuthScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        _buildTextField(
+        CustomTextField(
           controller: _firstNameController,
           hintText: 'First Name',
         ),
         const SizedBox(height: 30),
-        _buildTextField(
+        CustomTextField(
           controller: _lastNameController,
           hintText: 'Last Name',
         ),
@@ -95,21 +97,6 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  // Method to build the text fields
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
-  }
 
   // Method to build the submit button
   Widget _buildSubmitButton() {

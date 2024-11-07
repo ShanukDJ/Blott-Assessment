@@ -1,9 +1,7 @@
-import 'package:blott_mobile_assessment/views/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../utills/assets.dart';
 import '../utills/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class NotificationsAllowingScreen extends StatefulWidget {
   const NotificationsAllowingScreen({super.key});

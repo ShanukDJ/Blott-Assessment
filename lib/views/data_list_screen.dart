@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // Fetch the current user name
   Future<void> _getCurrentUser() async {
     _name = await FirestoreAuthService().getUserName();
-    setState(() {}); // Trigger a rebuild to update the UI with the user's name
   }
 
   @override
@@ -102,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
 
         if (snapshot.hasError) {
-          _isError = true; // Show error if fetching data fails
+          _isError = true;
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
