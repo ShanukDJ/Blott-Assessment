@@ -1,6 +1,6 @@
 import 'package:blott_mobile_assessment/providers/auth_provider.dart';
 import 'package:blott_mobile_assessment/views/auth_screen.dart';
-import 'package:blott_mobile_assessment/views/data_list_screen.dart';
+import 'package:blott_mobile_assessment/views/news_list_screen.dart';
 import 'package:blott_mobile_assessment/views/notifications_allowing_screen.dart';
 import 'package:blott_mobile_assessment/views/splash_screen.dart';
 import 'package:go_router/go_router.dart';

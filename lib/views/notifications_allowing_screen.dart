@@ -16,7 +16,6 @@ class _NotificationsAllowingScreenState extends State<NotificationsAllowingScree
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -61,14 +60,13 @@ class _NotificationsAllowingScreenState extends State<NotificationsAllowingScree
             ),
 
             Align(
-              alignment: Alignment.bottomCenter,
+                alignment: Alignment.bottomCenter,
                 child: _continueButton()),
           ],
         ),
       ),
     );
   }
-
 
   //continue button
   Widget _continueButton() {

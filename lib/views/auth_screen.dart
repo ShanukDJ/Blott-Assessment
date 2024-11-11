@@ -1,11 +1,9 @@
-import 'package:blott_mobile_assessment/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
-import '../services/auth_service.dart';
+import '../services/auth_db_helper.dart';
 import '../utills/widgets/custom_text.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -19,24 +17,19 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  // Controllers for first name and last name fields
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
 
   bool _isLoading = false;
-
-  // Boolean to track whether the form is valid
   bool _isFormValid = false;
 
   @override
   void initState() {
     super.initState();
-    // Listeners to track changes in text fields and validate form
     _firstNameController.addListener(_updateFormState);
     _lastNameController.addListener(_updateFormState);
   }
 
-  // Update form validity based on text field values
   void _updateFormState() {
     setState(() {
       _isFormValid = _firstNameController.text.isNotEmpty && _lastNameController.text.isNotEmpty;
@@ -49,6 +42,9 @@ class _AuthScreenState extends State<AuthScreen> {
     _lastNameController.dispose();
     super.dispose();
   }
+
+  // Expose this method for testing
+  bool get isFormValid => _isFormValid;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +76,6 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  // Method to build the form widget
   Widget _buildForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -95,38 +90,23 @@ class _AuthScreenState extends State<AuthScreen> {
           hintText: 'Last Name',
         ),
         const SizedBox(height: 160),
-        _isLoading ?
-        Center(
-        child: LoadingAnimationWidget.staggeredDotsWave(
-    color: Theme.of(context).colorScheme.primary,
-    size: 50,
-    ),
-    ):
-        _buildSubmitButton(),
+        _isLoading
+            ? Center(
+          child: LoadingAnimationWidget.staggeredDotsWave(
+            color: Theme.of(context).colorScheme.primary,
+            size: 50,
+          ),
+        )
+            : _buildSubmitButton(),
       ],
     );
   }
 
-
-  // Method to build the submit button
   Widget _buildSubmitButton() {
     return Padding(
-      padding:  EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.4),
+      padding: EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.4),
       child: ElevatedButton(
-        onPressed:  () async {
-          if (_isFormValid) {
-            setState(() {
-              _isLoading = true;
-            });
-            await Provider.of<AuthProvider>(context, listen: false).signUpAnonymously();
-            await AuthService().saveUserName(_firstNameController.text);
-            setState(() {
-              _isLoading = false;
-            });
-            Permission.notification.request();
-            context.go('/notifications');
-          }
-        },
+        onPressed: _isFormValid ? _onSubmit : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: _isFormValid
               ? Theme.of(context).colorScheme.primary
@@ -136,9 +116,32 @@ class _AuthScreenState extends State<AuthScreen> {
         child: const Icon(
           Icons.arrow_forward_ios_outlined,
           color: Colors.white,
-          size: 20, // Icon size
+          size: 20,
         ),
       ),
     );
+  }
+
+  Future<void> _onSubmit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await DatabaseHelper.instance.insertUser(
+      _firstNameController.text,
+      _lastNameController.text,
+    );
+
+    Provider.of<AuthProvider>(context, listen: false).setUserData(
+      _firstNameController.text.trim(),
+      _lastNameController.text.trim(),
+    );
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    Permission.notification.request();
+    context.go('/notifications');
   }
 }
